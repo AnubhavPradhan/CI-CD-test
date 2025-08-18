@@ -65,8 +65,11 @@ jobs:
         with:
           images: ${{ secrets.DOCKERHUB_REPOSITORY }}/ci-cd-test
           tags: |
-            type=raw,value=backend,enable={{is_default_branch}}
-            type=raw,value=backend-latest,enable={{is_default_branch}}
+            # publish latest only on default branch (usually main)
+            type=raw,value=latest,enable={{is_default_branch}}
+            # commit SHA tags for precise rollbacks
+            type=sha,format=long
+            type=sha,format=short,prefix=
 
       # 5) Build and push the image
       - name: Build & Push
