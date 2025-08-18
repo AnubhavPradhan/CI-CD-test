@@ -54,16 +54,19 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
+          registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # 4) Compute tags (latest + short SHA)
-      - name: Set image tags
-        id: vars
-        run: |
-          SHORT_SHA=${GITHUB_SHA::7}
-          echo "IMAGE=your-dockerhub-username/hello-ci-cd" >> $GITHUB_OUTPUT
-          echo "TAGS=type=raw,value=latest|type=raw,value=$SHORT_SHA" >> $GITHUB_OUTPUT
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKERHUB_REPOSITORY }}/ci-cd-test
+          tags: |
+            type=raw,value=backend,enable={{is_default_branch}}
+            type=raw,value=backend-latest,enable={{is_default_branch}}
 
       # 5) Build and push the image
       - name: Build & Push
@@ -71,9 +74,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ steps.vars.outputs.IMAGE }}:latest
-            ${{ steps.vars.outputs.IMAGE }}:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           # optional build cache:
           cache-from: type=gha
           cache-to: type=gha,mode=max
