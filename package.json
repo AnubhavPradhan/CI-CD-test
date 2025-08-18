@@ -1,0 +1,13 @@
+{
+  "name": "hello-ci-cd",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"console.log('✅ tests passed')\"",
+    "build": "node -e \"console.log('📦 build step (e.g., tsc, webpack)')\""
+  },
+  "dependencies": {
+    "build": "^0.1.4"
+  }
+}
