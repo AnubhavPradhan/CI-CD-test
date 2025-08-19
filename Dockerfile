@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Runtime stage
-FROM node:20-alpine
+FROM node:20-alpine AS runner
 WORKDIR /app
 COPY --from=build /app ./
 EXPOSE 3000
