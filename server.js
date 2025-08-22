@@ -1,8 +1,8 @@
 // server.js (only the root handler changed)
 import http from "http";
+// import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
-
 const APP_SECRET = process.env.APP_SECRET || null;
 if (!APP_SECRET) {
   console.warn("[warn] APP_SECRET is not set (using null).");
