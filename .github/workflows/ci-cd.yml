@@ -58,6 +58,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Export APP_SECRET to this job's environment
+      - name: Export APP_SECRET
+        run: echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> "$GITHUB_ENV"
+
       # 4) Compute tags (latest + short SHA)
       - name: Extract image metadata
         id: meta
