@@ -3,6 +3,7 @@ import http from "http";
 // import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
+// APP_SECRET
 const APP_SECRET = process.env.APP_SECRET || null;
 if (!APP_SECRET) {
   console.warn("[warn] APP_SECRET is not set (using null).");
